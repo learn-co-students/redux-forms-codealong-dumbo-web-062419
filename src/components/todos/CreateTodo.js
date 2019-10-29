@@ -1,13 +1,44 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class CreateTodo extends Component {
+
+  state = {
+      text: ''
+    };
+
+  handleChange = (event) => {
+    this.setState({
+      text: event.target.value
+    });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    //this.props.addTodo(this.state)
+    this.props.dispatch({ type: 'ADD_TODO', payload: this.state });
+  }
+
   render() {
     return(
       <div>
-        Create Todo Component
-      </div>
-    )
-  }
-}
+        <form onSubmit={ event => this.handleSubmit(event) }>
+          <p>
+            <label>add todo</label>
+            <input type="text" onChange={e => this.handleChange(e)} value={this.state.text}/>
+          </p>
+          <input type="submit" />
+        </form>
 
-export default CreateTodo;
+      </div>
+    );
+  }
+};
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     addTodo: (formData) => dispatch({ type: 'ADD_TODO', payload: formData })
+//   };
+// };
+
+export default connect()(CreateTodo);
